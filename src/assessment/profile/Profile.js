@@ -1,0 +1,227 @@
+import React, { Component } from 'react';
+//import { Collapse } from 'react-collapse';
+//import { presets } from 'react-motion';
+import cs from 'classnames';
+import { Card, Image, Icon, Message, Table, Divider, Dropdown, Header, Button, Label, Segment } from 'semantic-ui-react';
+import { assessmentSteps } from '../config/steps';  
+import {
+	isCompetencesCompleted,
+	computeResultMark
+} from '../calculations';
+
+import './profile.css';
+
+class Profile extends Component {
+
+	constructor(props){
+		super(props);
+
+		this.renderResultMark = this.renderResultMark.bind(this);
+	}
+
+
+	renderResultMark(resultMark){
+		const { rules } = this.props;
+		return resultMark && (
+			<Label
+				size='large'
+				className='assessment-profile__label'
+				style={{
+					backgroundColor: rules[resultMark].color,
+					borderColor: rules[resultMark].color,
+					float: 'right'
+				}}
+			>
+				{resultMark}
+			</Label>
+		);
+	}
+
+	_isAssessmentOpened(paId, index){
+		const { ui, user, pas } = this.props;
+		return user.assessment.pas.length > 1 ? (index === 0 ? !ui.pas[paId] : !!ui.pas[paId]) : true;
+	}
+
+	render(){
+		const {
+			CompetenceComponent,
+			onChangeManager,
+			onTogglePa,
+			onSecondStep,
+			onFourthStep,
+			legends,
+			meta,
+			user,
+			rules,
+			pas,
+			ui,
+			CompetenceContainer,
+		} = this.props;
+
+		const pasLen = user.assessment.pas.length;
+		const isCompleted = isCompetencesCompleted(this.props);
+		return (
+			<div className='assessment-profile'>
+				<Card fluid>
+					<Card.Content>
+						<Image floated='right'>
+							<Icon size='huge' color='blue' name='user' />
+						</Image>
+						<Card.Header
+							as='a'
+							target='__blank'
+							href={`/view_doc.html?mode=collaborator&object_id=${user.id}`}
+						>	
+							{user.fullname}
+						</Card.Header>
+						<Card.Meta>{user.department} -> {user.position}</Card.Meta>
+						<Card.Description>
+							Оценка находится на этапе <strong>"{user.assessment.stepName}"</strong>
+						</Card.Description>
+						<Card.Description>
+							Руководитель {' '}
+							<Dropdown inline text={user.manager.fullname}>
+								<Dropdown.Menu>
+									<Dropdown.Item
+										icon='address card'
+										text='Посмотреть профиль'
+										onClick={() => {
+											window.open(`/view_doc.html?mode=collaborator&object_id=${user.manager.id}`, '_blank');
+										}}
+									/>
+									{
+										meta.curUserID == user.id && 
+										user.assessment.step == assessmentSteps.first && 
+										(
+											<Dropdown.Item
+												icon='edit'
+												text='Изменить'
+												onClick={onChangeManager}
+											/>
+										)
+									}
+								</Dropdown.Menu>
+							</Dropdown>
+						</Card.Description>
+					</Card.Content>
+				</Card>
+				<Message warning>
+					<Message.Header>Внимательно прочитайте перед заполнением!</Message.Header>
+					<Table celled size='small'>
+						<Table.Header>
+							<Table.Row>
+								<Table.HeaderCell>Оценка</Table.HeaderCell>
+								<Table.HeaderCell>Описание</Table.HeaderCell>
+							</Table.Row>
+						</Table.Header>
+						<Table.Body>
+							{legends.map((l, index) => {
+								return (
+									<Table.Row key={index}>
+										<Table.Cell
+											textAlign='center'
+											style={{ position: 'relative', height: '60px' }}
+										>
+											<span style={{
+												backgroundColor: l.color,
+												position: 'absolute',
+												top: '0',
+												left: '0',
+												width: '100%',
+												height: '100%'
+											}}>
+												<strong style={{
+													position: 'absolute',
+													top: '50%',
+													transform: 'translate(-50%,-50%)',
+													left: '50%'
+												}}>{l.scale}</strong>
+											</span>
+										</Table.Cell>
+										<Table.Cell style={{ position: 'relative', height: '60px' }}>
+											<span>{l.description}</span>
+										</Table.Cell>
+									</Table.Row>
+								)
+							})}
+						</Table.Body>
+					</Table>
+				</Message>
+				<Divider />
+				<div className='assessment-profile__pas'>
+					{
+						user.assessment.pas.map((p, index) => {
+							const pa = pas[p];
+							const resultMark = computeResultMark(p, this.props);
+							const isOpened = this._isAssessmentOpened(pa.id, index);
+							return (
+								<Segment clearing key={pa.id} className='assessment-profile__pa'>
+									{pasLen > 1 && <div className='assessment-profile__pa_header' onClick={() => onTogglePa(pa.id)}>
+										<Header as='h3'>
+											{/*!ui.pas[pa.id] ? <Icon name='angle up' /> : <Icon name='angle down' /> */}
+											{isOpened ? <Icon name='angle down' /> : <Icon name='angle up' />}
+											<Header.Content style={{ width: '100%' }}>{pa.statusName} {this.renderResultMark(resultMark)}</Header.Content>
+										</Header>
+									</div>}
+									<div className={cs({
+										'assessment-profile__pa-content':  true,
+										'assessment-profile__pa-content--visible': isOpened
+									})}>
+										<div className='assessment-profile__competences'>
+											{pa.competences.map(c => <CompetenceComponent
+													key={c}
+													id={c}
+												/>
+											)}
+										</div>
+										<Header floated='right' as='h3'>Итоговый результат 
+											{this.renderResultMark(resultMark)}
+										</Header>
+									</div>
+								</Segment>
+							)
+						})
+					}
+				</div>
+				<div className='assessment-profile__result'>
+					{
+						user.assessment.step == assessmentSteps.first && 
+						meta.curUserID === user.id &&
+						isCompleted &&
+						<Button
+							inverted
+							color='blue'
+							onClick={onSecondStep}
+						>
+							Перевести на оценку руководителя
+						</Button>
+					}
+					{
+						user.assessment.step == assessmentSteps.third && 
+						meta.curUserID === user.id &&
+						<Button.Group>
+							<Button
+								style={{ marginRight: '16px' }}
+								inverted
+								color='green'
+								onClick={() => onFourthStep(true)}
+							>
+								Согласен с оценкой
+							</Button>
+							<Button
+								inverted
+								color='red'
+								onClick={() => onFourthStep(false)}
+							>
+								Не согласен
+							</Button>
+						</Button.Group>
+					}
+				</div>
+				<Divider clearing hidden/>
+			</div>
+		);
+	}
+}
+
+export default Profile;
