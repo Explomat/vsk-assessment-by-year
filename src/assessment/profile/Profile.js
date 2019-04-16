@@ -34,7 +34,8 @@ class Profile extends Component {
 
 	_isAssessmentOpened(paId, index){
 		const { ui, user } = this.props;
-		return user.assessment.pas.length > 1 ? (index === 0 ? !ui.pas[paId] : !!ui.pas[paId]) : true;
+		//return user.assessment.pas.length > 1 ? (index === 0 ? !ui.pas[paId] : !!ui.pas[paId]) : true;
+		return user.assessment.pas.length > 1 ? ui.pas[paId] : !ui.pas[paId];
 	}
 
 	render(){

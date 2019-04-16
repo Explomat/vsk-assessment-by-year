@@ -318,15 +318,15 @@ function user(userId){
 			c.fullname, \n\
 			c.position_name as position, \n\
 			c.position_parent_name as department, \n\
-			m.cc as [count]\n\
+			m.[count] \n\
 		FROM \n\
 			collaborators c, \n\
 			( \n\
-				select count(*) cc \n\
-				from pas p \n\
+				select count(*) as [count] \n\
+				from assessment_plans ap \n\
 				where \n\
-					p.expert_person_id = " + userId + " \n\
-					and p.assessment_appraise_id = " + ASSESSMENT_APPRAISE_ID + " \n\
+					ap.boss_id = " + userId + " \n\
+					and ap.assessment_appraise_id = " + ASSESSMENT_APPRAISE_ID + " \n\
 			) m \n\
 		WHERE \n\
 			c.id = " + userId
@@ -338,7 +338,7 @@ function user(userId){
 			fullname: String(u.fullname),
 			position: String(u.position),
 			department: String(u.department),
-			isManager: OptInt(u.count) > 1
+			isManager: OptInt(u.count) >= 1
 		}
 	}
 }

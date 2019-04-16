@@ -39,7 +39,7 @@ class Competence extends Component {
 
 	handleChangeMark(i, name){
 		this.props.changeMark(i, name);
-		//this.handleFocus(i, name);
+		this.handleFocus(i, name);
 	}
 
 	render(){
@@ -134,7 +134,6 @@ class Competence extends Component {
 									</Table.Cell>
 									<Table.Cell width={3} style={{ position: 'relative' }}>
 										<TextareaAutosize
-											autoFocus
 											inputRef={this.myrefs[i]}
 											className={
 												cs({

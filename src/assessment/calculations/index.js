@@ -68,13 +68,17 @@ const computeCompetenceMark = (competenceId, props) => {
 	return computeScaleByPercent(percent, props);
 }
 
-const computeResultMark = (paId, props) => {
+const computeResultPercents = (paId, props) => {
 	const { pas } = props;
 	const pa = pas[paId];
 	const comps = pa.competences;
 	const percents = comps.reduce((f, s) => f += computeCompetencePercent(s, props), 0);
-	const r = percents / comps.length;
-	return computeScaleByPercent(r, props);
+	return Math.round((percents / comps.length) / 10) * 10;
+}
+
+const computeResultMark = (paId, props) => {
+	const p = computeResultPercents(paId, props);
+	return computeScaleByPercent(p, props);
 }
 
 //т.к. id индикатора теперь имеет вид paId-competenceId-indicatorId,
@@ -88,6 +92,7 @@ const commonId = id => {
 export {
 	isCommentRequire,
 	computeCompetenceMark,
+	computeResultPercents,
 	computeResultMark,
 	isCompetenceCompleted,
 	isCompetencesCompleted,

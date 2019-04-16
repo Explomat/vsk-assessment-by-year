@@ -30,7 +30,7 @@ const Pa = ({ pa, CompetenceContainer, ...props }) => {
 			{props.isHeaderOpened && <div className='assessment-profile__pa_header' onClick={() => props.onTogglePa(pa.id)}>
 				<Header as='h3'>
 					{/*!ui.pas[pa.id] ? <Icon name='angle up' /> : <Icon name='angle down' /> */}
-					{props.isOpened ? <Icon name='angle down' /> : <Icon name='angle up' />}
+					{props.isOpened ? <Icon name='angle down' /> : <Icon name='angle right' />}
 					<Header.Content style={{ width: '100%' }}>{pa.statusName} {renderedResultMark}</Header.Content>
 				</Header>
 			</div>}

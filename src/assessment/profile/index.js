@@ -4,7 +4,7 @@ import ProfileContainer from './ProfileContainer';
 import ViewSubordinate from '../subordinate';
 import Subordinate from './Subordinate';
 import { withRouter } from 'react-router';
-import { Menu, Segment, Input, List, Dimmer, Loader, Modal, Header, Button, Icon } from 'semantic-ui-react';
+import { Menu, Segment, Input, List, Dimmer, Loader, Modal, Header, Button, Icon, Message } from 'semantic-ui-react';
 import { setTab, searchSubordinates, getInitialData } from './profileActions';
 import { connect } from 'react-redux';
 import { find } from 'lodash';
@@ -99,7 +99,7 @@ class Main extends Component {
 						ui.activeTab === 'profile' ? (
 							<ProfileContainer />
 						) : (
-							<List verticalAlign='middle' selection>
+							subordinates.length > 0 ? (<List verticalAlign='middle' selection>
 								{
 									subordinates.map(s => (
 										<Subordinate
@@ -109,7 +109,11 @@ class Main extends Component {
 										/>
 									))
 								}
-							</List>
+							</List>) : (
+								<Message info>
+									<Message.Content>У вас еще нет подчиненных</Message.Content>
+								</Message>
+							)
 						) 
 					}
 				</Segment>
