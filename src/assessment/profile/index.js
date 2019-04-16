@@ -3,7 +3,6 @@ import { assessmentSteps } from '../config/steps';
 import ProfileContainer from './ProfileContainer';
 import ViewSubordinate from '../subordinate';
 import Subordinate from './Subordinate';
-import { Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { Menu, Segment, Input, List, Dimmer, Loader, Modal, Header, Button, Icon } from 'semantic-ui-react';
 import { setTab, searchSubordinates, getInitialData } from './profileActions';
@@ -53,7 +52,7 @@ class Main extends Component {
 
 	render(){
 		const { ui, user, subordinates,  onChangeTab, onSearchSubordinates } = this.props;
-		const { isShowSubordinate, isManagerCanNotEstimate, message, curSubordinate, subordinateId } = this.state;
+		const { isShowSubordinate, isManagerCanNotEstimate, curSubordinate, subordinateId } = this.state;
 
 		if (ui.isLoading) {
 			return (

@@ -75,7 +75,10 @@ const profileReducer = (state = {
 	pas: {},
 	result: {
 		user: {
-			subordinates: []
+			subordinates: [],
+			assessment: {
+				pas: []
+			}
 		},
 		rules: [],
 		commonCompetences: []

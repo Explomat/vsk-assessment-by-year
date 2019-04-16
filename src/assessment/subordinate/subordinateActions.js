@@ -65,7 +65,7 @@ export function setComment(indicatorId, comment){
 
 export function getInitialData(subordinateId){
 	return dispatch => {
-		/*request('SubordinateData')
+		request('SubordinateData')
 			.get({user_id: subordinateId})
 			.then(d => {
 				const ndata = normalize(d, app);
@@ -78,8 +78,8 @@ export function getInitialData(subordinateId){
 				});
 				dispatch(setLoading(false));
 			})
-			.catch(e => console.log(e));*/
-		setTimeout(() => {
+			.catch(e => console.log(e));
+		/*setTimeout(() => {
 			const ndata = normalize(mock, app);
 			dispatch({
 				type: constants.SUBORDINATE_GET_INITIAL_DATA_SUCCESS,
@@ -89,7 +89,7 @@ export function getInitialData(subordinateId){
 				}
 			});
 			dispatch(setLoading(false));
-		}, 500);
+		}, 500);*/
 	}
 }
 

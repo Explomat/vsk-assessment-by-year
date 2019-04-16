@@ -57,6 +57,7 @@
 }
 
 .assessment-profile__competences-container__text-area{
+	resize: none;
 	z-index: 2;
 	width: 100%;
 	margin: 0;

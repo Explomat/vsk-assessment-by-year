@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SubordinateContainer from './SubordinateContainer';
 import { assessmentSteps } from '../config/steps';  
-import { Modal, Button, Image, Header, Icon, Loader, Dimmer, Message } from 'semantic-ui-react';
+import { Modal, Button, Icon, Loader, Dimmer, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { getInitialData, thirdStep } from './subordinateActions';
 import { isCompetencesCompleted } from '../calculations';
@@ -40,7 +40,7 @@ class Main extends Component {
 							</Button>
 						</Modal.Actions>)
 					) : (
-						<Message size='small' icon warning>
+						<Message size='small' icon info>
 							<Icon name='exclamation' />
 							<Message.Content>
 								Анкета доступна только для просмотра

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Table, Label, Popup } from 'semantic-ui-react';
 import TextareaAutosize from 'react-textarea-autosize';
-import { connect } from 'react-redux';
-import { find } from 'lodash';
 import pSBC from '../../utils/pSBC';
-import boolean from 'boolean';
 import cs from 'classnames';
 import {
 	computeCompetenceMark,
@@ -40,9 +37,9 @@ class Competence extends Component {
 		}
 	}
 
-	handleChangeMark(i, name, scales){
-		this.props.changeMark(i, name, scales);
-		this.handleFocus(i, name);
+	handleChangeMark(i, name){
+		this.props.changeMark(i, name);
+		//this.handleFocus(i, name);
 	}
 
 	render(){
@@ -54,7 +51,6 @@ class Competence extends Component {
 			indicators,
 			commonIndicators,
 			rules,
-			changeMark,
 			changeComment
 		} = this.props;
 
@@ -124,7 +120,7 @@ class Competence extends Component {
 																	borderColor: scale.color
 																}}
 																as='a'
-																onClick={() => this.handleChangeMark(i, s.name, commonInd.scales)}
+																onClick={() => this.handleChangeMark(i, s.name)}
 															>
 																{userInd.mark_text === s.name && <Icon name='check' />}
 																{s.name}
@@ -138,6 +134,7 @@ class Competence extends Component {
 									</Table.Cell>
 									<Table.Cell width={3} style={{ position: 'relative' }}>
 										<TextareaAutosize
+											autoFocus
 											inputRef={this.myrefs[i]}
 											className={
 												cs({
