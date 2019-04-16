@@ -60,7 +60,10 @@ const subordinateReducer = (state = {
 	pas: {},
 	result: {
 		user: {
-			subordinates: []
+			subordinates: [],
+			assessment: {
+				pas: []
+			}
 		},
 		rules: [],
 		commonCompetences: []

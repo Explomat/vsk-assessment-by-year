@@ -475,7 +475,8 @@ function getSubordinateData(queryObjects){
 	var userData = user(userID);
 	var managerData = managerForUser(userID);
 	var planData = assessmentPlanForUser(userID);
-	var pasData = pasForUser(userID, 'manager');
+	//var pasData = pasForUser(userID, 'manager');
+	var pasData = pasForUser(userID);
 	var commonCompetencesData = commonCompetences(userID);
 	var _rules = _docWvars(queryObjects.DocID);
 

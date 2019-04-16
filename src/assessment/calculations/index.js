@@ -1,4 +1,4 @@
-import { find } from 'lodash';
+import { find, findKey } from 'lodash';
 import boolean from 'boolean';
 
 const isCommentRequire = (scales, markText) => {
@@ -14,10 +14,11 @@ const isCompetenceCompleted = (competenceId, props) => {
 		const ind = indicators[i];
 		const commonI = commonIndicators[commonId(i)];
 		const mark = ind.mark_text;
-		return (
+		const result = (
 			mark === '' ||
 			(isCommentRequire(commonI.scales, mark) && !ind.comment)
 		)
+		return result;
 	});
 	return f.length === 0;
 }
@@ -53,11 +54,11 @@ const computeCompetencePercent = (competenceId, props) => {
 }
 
 const computeScaleByPercent = (percent, props) => {
-	const { legends } = props;
+	const { rules } = props;
 	const r = Math.round(percent / 10) * 10;
 
-	const s = find(legends, { percent: r.toString() });
-	if (s) return s.scale;
+	const s = findKey(rules, { percent: r.toString() });
+	if (s) return rules[s].scale;
 	return null;
 	//return legends[0].scale;
 }

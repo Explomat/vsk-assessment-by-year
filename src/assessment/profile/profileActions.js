@@ -106,7 +106,7 @@ export function setTab(tabName){
 
 export function getInitialData(){
 	return dispatch => {
-		/*request('ProfileData')
+		request('ProfileData')
 			.get()
 			.then(d => {
 				const ndata = normalize(d, app);
@@ -119,8 +119,8 @@ export function getInitialData(){
 				});
 				dispatch(setLoading(false));
 			})
-			.catch(e => console.log(e));*/
-		setTimeout(() => {
+			.catch(e => console.log(e));
+		/*setTimeout(() => {
 			const ndata = normalize(mock, app);
 			console.log(JSON.stringify(ndata));
 			dispatch({
@@ -131,7 +131,7 @@ export function getInitialData(){
 				}
 			});
 			dispatch(setLoading(false));
-		}, 500);
+		}, 500);*/
 	}
 }
 

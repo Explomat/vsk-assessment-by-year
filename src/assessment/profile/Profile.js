@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 //import { Collapse } from 'react-collapse';
 //import { presets } from 'react-motion';
-import cs from 'classnames';
-import { Card, Image, Icon, Message, Table, Divider, Dropdown, Header, Button, Label, Segment } from 'semantic-ui-react';
+import { Card, Image, Icon, Message, Table, Divider, Dropdown, Button, Label } from 'semantic-ui-react';
 import { assessmentSteps } from '../config/steps';  
-import {
-	isCompetencesCompleted,
-	computeResultMark
-} from '../calculations';
+import { isCompetencesCompleted } from '../calculations';
 
 import './profile.css';
 
@@ -18,7 +14,6 @@ class Profile extends Component {
 
 		this.renderResultMark = this.renderResultMark.bind(this);
 	}
-
 
 	renderResultMark(resultMark){
 		const { rules } = this.props;
@@ -38,24 +33,19 @@ class Profile extends Component {
 	}
 
 	_isAssessmentOpened(paId, index){
-		const { ui, user, pas } = this.props;
+		const { ui, user } = this.props;
 		return user.assessment.pas.length > 1 ? (index === 0 ? !ui.pas[paId] : !!ui.pas[paId]) : true;
 	}
 
 	render(){
 		const {
-			CompetenceComponent,
+			PaContainer,
 			onChangeManager,
-			onTogglePa,
 			onSecondStep,
 			onFourthStep,
 			legends,
 			meta,
 			user,
-			rules,
-			pas,
-			ui,
-			CompetenceContainer,
 		} = this.props;
 
 		const pasLen = user.assessment.pas.length;
@@ -151,14 +141,13 @@ class Profile extends Component {
 				<div className='assessment-profile__pas'>
 					{
 						user.assessment.pas.map((p, index) => {
-							const pa = pas[p];
-							const resultMark = computeResultMark(p, this.props);
-							const isOpened = this._isAssessmentOpened(pa.id, index);
-							return (
-								<Segment clearing key={pa.id} className='assessment-profile__pa'>
+							//const pa = pas[p];
+							//const resultMark = computeResultMark(p, this.props);
+							const isOpened = this._isAssessmentOpened(p, index);
+							return <PaContainer key={p} id={p} isHeaderOpened={pasLen > 1} isOpened={isOpened} />
+								{/*<Segment clearing key={pa.id} className='assessment-profile__pa'>
 									{pasLen > 1 && <div className='assessment-profile__pa_header' onClick={() => onTogglePa(pa.id)}>
 										<Header as='h3'>
-											{/*!ui.pas[pa.id] ? <Icon name='angle up' /> : <Icon name='angle down' /> */}
 											{isOpened ? <Icon name='angle down' /> : <Icon name='angle up' />}
 											<Header.Content style={{ width: '100%' }}>{pa.statusName} {this.renderResultMark(resultMark)}</Header.Content>
 										</Header>
@@ -179,7 +168,7 @@ class Profile extends Component {
 										</Header>
 									</div>
 								</Segment>
-							)
+							)*/}
 						})
 					}
 				</div>
@@ -216,6 +205,24 @@ class Profile extends Component {
 								Не согласен
 							</Button>
 						</Button.Group>
+					}
+					{
+						user.assessment.step == assessmentSteps.second &&
+						meta.curUserID === user.id &&
+						<Message info>
+							<Message.Content>
+								Вы не можете больше редактировать анкету, т.к. она находится на этапе "{user.assessment.stepName}"
+							</Message.Content>
+						</Message>
+					}
+					{
+						user.assessment.step == assessmentSteps.fourth &&
+						meta.curUserID === user.id &&
+						<Message info>
+							<Message.Content>
+								Ваша оценка завершена
+							</Message.Content>
+						</Message>
 					}
 				</div>
 				<Divider clearing hidden/>
