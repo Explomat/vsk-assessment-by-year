@@ -135,12 +135,13 @@ export function getInitialData(){
 	}
 }
 
-export function setMark(indicatorId, markText) {
+export function setMark(indicatorId, markText, markValue) {
 	return {
 		type: constants.PROFILE_SET_MARK,
 		payload: {
 			indicatorId,
-			markText
+			markText,
+			markValue
 		}
 	}
 }

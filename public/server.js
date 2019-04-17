@@ -259,6 +259,7 @@ function pasForUser(userId, status){
 			workflowStateName: String(doc.TopElem.workflow_state_name),
 			statusName: String(statusName),
 			status: String(doc.TopElem.status),
+			overall: String(doc.TopElem.overall),
 			competences: []
 		};
 
@@ -609,7 +610,7 @@ function postThirdStep(queryObjects){
 			for (indicator in elem.indicators) {
 				ind = ArrayOptFind(comp.indicators, 'This.indicator_id == ' + indicator.indicator_id);
 				if (ind != undefined) {
-					//ind.mark_value = indicator.mark_value;
+					ind.mark_value = indicator.mark_value;
 					ind.mark_text = indicator.mark_text;
 					ind.comment = indicator.comment;
 				}
@@ -670,7 +671,7 @@ function postSecondStep(queryObjects){
 				for (indicator in elem.indicators) {
 					ind = ArrayOptFind(comp.indicators, 'This.indicator_id == ' + indicator.indicator_id);
 					if (ind != undefined) {
-						//ind.mark_value = indicator.mark_value;
+						ind.mark_value = indicator.mark_value;
 						ind.mark_text = indicator.mark_text;
 						ind.comment = indicator.comment;
 					}

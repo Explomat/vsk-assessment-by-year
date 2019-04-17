@@ -17,8 +17,8 @@ function mapStateToProps(state){
 
 function mapDispatchProps(dispatch) {
 	return {
-		changeMark: (indicatorId, markText, scales) => {
-			dispatch(setMark(indicatorId, markText));
+		changeMark: (indicatorId, markText, markValue) => {
+			dispatch(setMark(indicatorId, markText, markValue));
 		},
 		changeComment: (indicatorId, value) => dispatch(setComment(indicatorId, value))
 	}

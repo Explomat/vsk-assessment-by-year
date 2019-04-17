@@ -37,8 +37,8 @@ class Competence extends Component {
 		}
 	}
 
-	handleChangeMark(i, name){
-		this.props.changeMark(i, name);
+	handleChangeMark(i, name, persent){
+		this.props.changeMark(i, name, persent);
 		this.handleFocus(i, name);
 	}
 
@@ -120,7 +120,7 @@ class Competence extends Component {
 																	borderColor: scale.color
 																}}
 																as='a'
-																onClick={() => this.handleChangeMark(i, s.name)}
+																onClick={() => this.handleChangeMark(i, s.name, s.persent)}
 															>
 																{userInd.mark_text === s.name && <Icon name='check' />}
 																{s.name}

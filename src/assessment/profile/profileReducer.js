@@ -46,7 +46,8 @@ const indicatorsReducer = (state = {}, action) => {
 				...state,
 				[action.payload.indicatorId]: {
 					...state[action.payload.indicatorId],
-					mark_text: action.payload.markText
+					mark_text: action.payload.markText,
+					mark_value: action.payload.markValue
 				}
 			}
 		}

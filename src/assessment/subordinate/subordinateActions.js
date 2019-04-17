@@ -136,12 +136,13 @@ export function thirdStep(){
 	}
 }
 
-export function setMark(indicatorId, markText) {
+export function setMark(indicatorId, markText, markValue) {
 	return {
 		type: constants.SUBORDINATE_SET_MARK,
 		payload: {
 			indicatorId,
-			markText
+			markText,
+			markValue
 		}
 	}
 }
