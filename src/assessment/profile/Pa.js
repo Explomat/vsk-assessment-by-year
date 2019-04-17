@@ -1,20 +1,19 @@
 import React from 'react';
 import { Header, Segment, Label, Icon } from 'semantic-ui-react';
-import { computeResultMark } from '../calculations';
+import { computeScaleByPercent } from '../calculations';
 import cs from 'classnames';
 
 const Pa = ({ pa, CompetenceContainer, ...props }) => {
 
 	const renderResultMark = (resultMark) => {
 		const { rules } = props;
-		const color = rules[resultMark] && rules[resultMark].color;
 		return resultMark && (
 			<Label
 				size='large'
 				className='assessment-profile__label'
 				style={{
-					backgroundColor: color,
-					borderColor: color,
+					backgroundColor: rules[resultMark].color,
+					borderColor: rules[resultMark].color,
 					float: 'right'
 				}}
 			>
@@ -23,7 +22,7 @@ const Pa = ({ pa, CompetenceContainer, ...props }) => {
 		);
 	}
 
-	const resultMark = computeResultMark(pa.id, props);
+	const resultMark = computeScaleByPercent(pa.overall, props);
 	const renderedResultMark = renderResultMark(resultMark);
 	return (
 		<Segment clearing key={pa.id} className='assessment-profile__pa'>
@@ -43,6 +42,7 @@ const Pa = ({ pa, CompetenceContainer, ...props }) => {
 							isDisabled={props.isDisabled}
 							key={c}
 							id={c}
+							paId={pa.id}
 						/>
 					)}
 				</div>

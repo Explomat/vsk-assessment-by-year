@@ -4,7 +4,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import pSBC from '../../utils/pSBC';
 import cs from 'classnames';
 import {
-	computeCompetenceMark,
 	isCompetenceCompleted,
 	isCommentRequire,
 	commonId
@@ -37,9 +36,10 @@ class Competence extends Component {
 		}
 	}
 
-	handleChangeMark(i, name, persent){
-		this.props.changeMark(i, name, persent);
-		this.handleFocus(i, name);
+	handleChangeMark(indicatorId, scaleName, scalePercent){
+		const { paId, id, onUpdatePa } = this.props;
+		onUpdatePa(paId, id, indicatorId, scaleName, scalePercent);
+		this.handleFocus(indicatorId, scaleName);
 	}
 
 	render(){
@@ -56,7 +56,8 @@ class Competence extends Component {
 
 		const userComp = competences[id];
 		const commonComp = commonCompetences[commonId(id)];
-		const mark = computeCompetenceMark(id, this.props);
+		const mark = userComp.mark_text;
+		//const mark = computeCompetenceMark(id, this.props);
 
 		return(
 			<div ref={this.competenceRef} className='assessment-profile__competences-container'>
@@ -120,7 +121,7 @@ class Competence extends Component {
 																	borderColor: scale.color
 																}}
 																as='a'
-																onClick={() => this.handleChangeMark(i, s.name, s.persent)}
+																onClick={() => this.handleChangeMark(i, s.name, s.percent)}
 															>
 																{userInd.mark_text === s.name && <Icon name='check' />}
 																{s.name}

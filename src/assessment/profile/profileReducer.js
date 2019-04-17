@@ -39,6 +39,39 @@ const uiReducer = (state = {}, action) => {
 	}
 }
 
+const pasReducer = (state = {}, action) => {
+	switch(action.type){
+		case constants.PROFILE_UPDATE_PA: {
+			return {
+				...state,
+				[action.payload.paId]: {
+					...state[action.payload.paId],
+					overall: action.payload.paOverall
+				}
+			}
+		}
+
+		default: return state;
+	}
+}
+
+const competencesReducer = (state = {}, action) => {
+	switch(action.type){
+		case constants.PROFILE_UPDATE_PA: {
+			return {
+				...state,
+				[action.payload.competenceId]: {
+					...state[action.payload.competenceId],
+					mark_text: action.payload.competenceMarkText,
+					mark_value: action.payload.competenceMarkValue
+				}
+			}
+		}
+
+		default: return state;
+	}
+}
+
 const indicatorsReducer = (state = {}, action) => {
 	switch(action.type){
 		case constants.PROFILE_SET_MARK: {
@@ -110,11 +143,14 @@ const profileReducer = (state = {
 			}
 		}
 
+		case constants.PROFILE_UPDATE_PA:
 		case constants.PROFILE_SET_COMMENT:
 		case constants.PROFILE_SET_MARK: {
 			return {
 				...state,
-				indicators: indicatorsReducer(state.indicators, action)
+				indicators: indicatorsReducer(state.indicators, action),
+				competences: competencesReducer(state.competences, action),
+				pas: pasReducer(state.pas, action)
 			}
 		}
 

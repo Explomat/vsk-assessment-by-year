@@ -268,6 +268,8 @@ function pasForUser(userId, status){
 				pa_id: String(p.id),
 				competence_id: String(c.competence_id),
 				weight: String(c.weight),
+				mark_text: String(c.mark_text),
+				mark_value: String(c.mark_value),
 				indicators: []
 			}
 
@@ -350,7 +352,8 @@ function subordinatesForUser(userId) {
 			c.id, \n\
 			c.fullname, \n\
 			c.position_name as position, \n\
-			c.position_parent_name as department \n\
+			c.position_parent_name as department, \n\
+			p.overall \n\
 		FROM \n\
 			collaborators c \n\
 		JOIN \n\
@@ -374,7 +377,7 @@ function subordinatesForUser(userId) {
 			data.assessment = {
 				step: String(plan.step),
 				stepName: String(plan.stepName),
-				overall: String(plan.overall)
+				overall: String(s.overall)
 			}
 		} else {
 			data.assessment = {};
@@ -597,6 +600,7 @@ function postFourthStep(queryObjects) {
 function postThirdStep(queryObjects){
 	var data = tools.read_object(queryObjects.Body);
 	var paId = data.HasProperty('id') ? data.id : null;
+	var overall = data.HasProperty('overall') ? data.overall : '';
 	var _competences = data.HasProperty('competences') ? data.competences : null;
 
 	// type 2 типов user и boss ( кто сохраняет)
@@ -605,8 +609,8 @@ function postThirdStep(queryObjects){
 	for (elem in _competences) {
 		comp = ArrayOptFind(curPaCard.TopElem.competences, 'This.competence_id == ' + elem.competence_id);
 		if (comp != undefined) {
-			/*comp.mark_value = elem.mark_value;
-			comp.mark_text = elem.mark_text;*/
+			comp.mark_value = elem.mark_value;
+			comp.mark_text = elem.mark_text;
 			for (indicator in elem.indicators) {
 				ind = ArrayOptFind(comp.indicators, 'This.indicator_id == ' + indicator.indicator_id);
 				if (ind != undefined) {
@@ -618,6 +622,7 @@ function postThirdStep(queryObjects){
 		}
 	}
 
+	curPaCard.TopElem.overall = overall;
 	curPaCard.TopElem.workflow_state = 3;
 	curPaCard.TopElem.workflow_state_name = 'Ознакомление сотрудника';
 	curPaCard.Save();
@@ -634,6 +639,7 @@ function postThirdStep(queryObjects){
 function postSecondStep(queryObjects){
 	var data = tools.read_object(queryObjects.Body);
 	var paId = data.HasProperty('id') ? data.id : null;
+	var overall = data.HasProperty('overall') ? data.overall : '';
 	var _competences = data.HasProperty('competences') ? data.competences : null;
 
 	// type 2 типов user и boss ( кто сохраняет)
@@ -666,8 +672,8 @@ function postSecondStep(queryObjects){
 		for (elem in _competences) {
 			comp = ArrayOptFind(curPaCard.TopElem.competences, 'This.competence_id == ' + elem.competence_id);
 			if (comp != undefined) {
-				/*comp.mark_value = elem.mark_value;
-				comp.mark_text = elem.mark_text;*/
+				comp.mark_value = elem.mark_value;
+				comp.mark_text = elem.mark_text;
 				for (indicator in elem.indicators) {
 					ind = ArrayOptFind(comp.indicators, 'This.indicator_id == ' + indicator.indicator_id);
 					if (ind != undefined) {
@@ -679,6 +685,7 @@ function postSecondStep(queryObjects){
 			}
 		}
 
+		curPaCard.TopElem.overall = overall;
 		curPaCard.TopElem.workflow_state = 2;
 		curPaCard.TopElem.workflow_state_name = 'Оценка руководителя';
 		curPaCard.Save();

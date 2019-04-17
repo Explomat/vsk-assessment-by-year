@@ -3,11 +3,13 @@ import React from 'react';
 import { Popup, Label, List, Image, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { computeScaleByPercent } from '../calculations';
 
 const Subordinate = ({ subordinate, rules, onClick }) => {
+	const overallMark = computeScaleByPercent(subordinate.assessment.overall, { rules });
 	return (
 		<List.Item key={subordinate.id} className='assessment-profile-subordinate' onClick={() => onClick(subordinate.id)}>
-			<List.Content floated='right'>
+			{overallMark && <List.Content floated='right'>
 				<Popup
 					key={subordinate.id}
 					size='mini'
@@ -17,16 +19,16 @@ const Subordinate = ({ subordinate, rules, onClick }) => {
 							size='big'
 							className='assessment-profile__label'
 							style={{
-								backgroundColor: rules[subordinate.assessment.overall] && rules[subordinate.assessment.overall].color,
-								borderColor: rules[subordinate.assessment.overall] && rules[subordinate.assessment.overall].color,
+								backgroundColor: rules[overallMark] && rules[overallMark].color,
+								borderColor: rules[overallMark] && rules[overallMark].color,
 							}}
 						>
-							{subordinate.assessment.overall}
+							{overallMark}
 						</Label>
 					}
-					content={rules[subordinate.assessment.overall] && rules[subordinate.assessment.overall].description}
+					content={rules[overallMark] && rules[overallMark].description}
 				/>
-			</List.Content>
+			</List.Content>}
 
 			{subordinate.avatarUrl ? <Image avatar src={subordinate.avatarUrl} /> : <Icon size='big' color='blue' name='user' />}
 			<List.Content>

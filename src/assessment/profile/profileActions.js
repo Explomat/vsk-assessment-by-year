@@ -5,6 +5,11 @@ import mock from './mockData';
 import { setStepMock } from '../mock';
 import { normalize, denormalize, schema } from 'normalizr';
 import { find } from 'lodash';
+import {
+	computeCompetencePercent,
+	computeResultPercents,
+	computeScaleByPercent
+} from '../calculations';
 
 
 const rule = new schema.Entity('rules', {}, { idAttribute: 'scale' });
@@ -44,6 +49,7 @@ export const constants = {
 	'PROFILE_SET_TAB': 'PROFILE_SET_TAB',
 	'PROFILE_SET_LOADING': 'PROFILE_SET_LOADING',
 	'PROFILE_SET_MARK': 'PROFILE_SET_MARK',
+	'PROFILE_UPDATE_PA': 'PROFILE_UPDATE_PA',
 	'PROFILE_SET_COMMENT': 'PROFILE_SET_COMMENT',
 	'PROFILE_SEARCH_SUBORDINATES': 'PROFILE_SEARCH_SUBORDINATES',
 	'PROFILE_TOGGLE_PA': 'PROFILE_TOGGLE_PA'
@@ -135,7 +141,7 @@ export function getInitialData(){
 	}
 }
 
-export function setMark(indicatorId, markText, markValue) {
+function setMark(indicatorId, markText, markValue){
 	return {
 		type: constants.PROFILE_SET_MARK,
 		payload: {
@@ -143,6 +149,28 @@ export function setMark(indicatorId, markText, markValue) {
 			markText,
 			markValue
 		}
+	}
+}
+
+export function updatePa(paId, competenceId, indicatorId, markText, markValue) {
+	return (dispatch, getState) => {
+		dispatch(setMark(indicatorId, markText, markValue));
+
+		const { app } = getState();
+		const competencePercent = computeCompetencePercent(competenceId, app.profile);
+		const competenceScale = computeScaleByPercent(competencePercent, app.profile);
+		const paOverall = computeResultPercents(paId, app.profile);
+
+		dispatch({
+			type: constants.PROFILE_UPDATE_PA,
+			payload: {
+				paId,
+				competenceId,
+				competenceMarkText: competenceScale,
+				competenceMarkValue: competencePercent,
+				paOverall
+			}
+		});
 	}
 }
 
@@ -179,6 +207,7 @@ export function secondStep(){
 
 			const data = {
 				id: pa.id,
+				overall: pa.overall,
 				competences: comps
 			}
 
