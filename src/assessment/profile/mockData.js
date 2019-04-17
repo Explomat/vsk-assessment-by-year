@@ -2,6 +2,7 @@ const data = {
   "meta": {
     "curUserID": "6148914691236517121"
   },
+  "instruction": "<p>Test</p>",
   "user": {
     "id": "6148914691236517121",
     "fullname": "Default User WebTutor",

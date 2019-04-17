@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import Instruction from './Instruction';
 //import { Collapse } from 'react-collapse';
 //import { presets } from 'react-motion';
-import { Card, Image, Icon, Message, Table, Divider, Dropdown, Button, Label } from 'semantic-ui-react';
+import { Card, Image, Icon, Message, Table, Divider, Dropdown, Button, Label, Header } from 'semantic-ui-react';
 import { assessmentSteps } from '../config/steps';  
 import { isCompetencesCompleted } from '../calculations';
 
@@ -13,6 +14,16 @@ class Profile extends Component {
 		super(props);
 
 		this.renderResultMark = this.renderResultMark.bind(this);
+		this.handleToggleInstruction = this.handleToggleInstruction.bind(this);
+		this.state = {
+			isShowInstruction: false
+		}
+	}
+
+	handleToggleInstruction(){
+		this.setState({
+			isShowInstruction: !this.state.isShowInstruction
+		});
 	}
 
 	renderResultMark(resultMark){
@@ -47,10 +58,12 @@ class Profile extends Component {
 			legends,
 			meta,
 			user,
+			instruction
 		} = this.props;
 
 		const pasLen = user.assessment.pas.length;
 		const isCompleted = isCompetencesCompleted(this.props);
+		const { isShowInstruction } = this.state;
 		return (
 			<div className='assessment-profile'>
 				<Card fluid>
@@ -94,8 +107,12 @@ class Profile extends Component {
 								</Dropdown.Menu>
 							</Dropdown>
 						</Card.Description>
+						<Card.Description>
+							<a onClick={this.handleToggleInstruction}>Прочитать инструкцию</a>
+						</Card.Description>
 					</Card.Content>
 				</Card>
+				{isShowInstruction && <Instruction instruction={instruction} onClose={this.handleToggleInstruction} />}
 				<Message warning>
 					<Message.Header>Внимательно прочитайте перед заполнением!</Message.Header>
 					<Table celled size='small'>

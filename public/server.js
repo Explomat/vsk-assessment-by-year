@@ -198,6 +198,29 @@ function postCreateInitialProfile(queryObjects){
 
 
 
+function _instruction() {
+	var q = ArrayOptFirstElem(XQuery("sql: \n\
+		select \n\
+			t.p.query('text_area').value('.','varchar(MAX)') as instruction \n\
+		from \n\
+			documents ds \n\
+		JOIN document d on d.id = ds.id \n\
+		CROSS APPLY d.data.nodes('/document') AS t(p) \n\
+		where \n\
+			ds.id in ( \n\
+				SELECT \n\
+					t.p.query('manual_document_id').value('.','varchar(250)') as doc_id \n\
+				from \n\
+					assessment_appraises aas \n\
+				join \n\
+					assessment_appraise aa on aa.id = aas.id \n\
+				CROSS APPLY aa.data.nodes('/assessment_appraise') AS t(p) \n\
+				where \n\
+					aas.id = " + ASSESSMENT_APPRAISE_ID + " \n\
+				)"
+	));
+	return q == undefined ? '' : q.instruction;
+}
 
 function assessmentPlanForUser(userId){
 	var q = XQuery("sql: \n\
@@ -477,6 +500,7 @@ function getSubordinateData(queryObjects){
 	var userID = queryObjects.HasProperty('user_id') ? Trim(queryObjects.user_id) : curUserID;
 
 	var userData = user(userID);
+	var instruction = _instruction();
 	var managerData = managerForUser(userID);
 	var planData = assessmentPlanForUser(userID);
 	//var pasData = pasForUser(userID, 'manager');
@@ -510,6 +534,7 @@ function getSubordinateData(queryObjects){
 		meta: {
 			curUserID: curUserID
 		},
+		instruction: String(instruction),
 		user: userData,
 		commonCompetences: commonCompetencesData,
 		rules: _rules
@@ -522,6 +547,7 @@ function getProfileData(queryObjects){
 	var d = OpenDoc(UrlFromDocID(Int(queryObjects.DocID)));
 
 	var userData = user(userID);
+	var instruction = _instruction();
 	var managerData = managerForUser(userID);
 	var planData = assessmentPlanForUser(userID);
 	var pasData = pasForUser(userID);
@@ -557,6 +583,7 @@ function getProfileData(queryObjects){
 		meta: {
 			curUserID: curUserID
 		},
+		instruction: String(instruction),
 		user: userData,
 		commonCompetences: commonCompetencesData,
 		rules: _rules

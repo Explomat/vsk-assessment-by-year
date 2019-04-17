@@ -11,6 +11,7 @@ function mapStateToProps(state){
 		PaContainer,
 		meta: profile.result.meta,
 		user: profile.result.user,
+		instruction: profile.result.instruction,
 		legends: profile.result.rules.map(r => profile.rules[r]),
 		...result
 	}
