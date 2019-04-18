@@ -74,6 +74,7 @@ export function getInitialData(subordinateId){
 	return dispatch => {
 		request('SubordinateData')
 			.get({user_id: subordinateId})
+			.then(r => r.json())
 			.then(d => {
 				const ndata = normalize(d, app);
 				dispatch({

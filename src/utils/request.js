@@ -19,7 +19,7 @@ const request = action_name => {
 		get: (params = {}, config) => {
 			const url = new URL(_url);
 			Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-			return fetch(url, config).then(r => r.json());
+			return fetch(url, config);
 		},
 		post: (data, config) => {
 			return fetch(_url, {

@@ -39,6 +39,10 @@ var USER_COMPETENCE_PROFILE_ID = 6639303242852679344;
 	}
 ]*/
 
+function _notificate(templateCode, primaryId, secondaryId){
+	tools.create_notification(templateCode, primaryId, '', secondaryId);
+}
+
 
 function stringifyWT(obj) {
 	var type = DataType(obj);
@@ -74,6 +78,15 @@ function stringifyWT(obj) {
 
 function _toJSON(obj) {
 	return UnifySpaces(HtmlToPlainText(obj));
+}
+
+function _assessmentBossByUser(userId){
+	var q = ArrayOptFirstElem(XQuery("sql: \n\
+		select ap.boss_id \n\
+		from assessment_plans ap \n\
+		where person_id = " + userId
+	));
+	return q == undefined ? q : q.boss_id;
 }
 
 function _assessmentPlanByUser(userId){
@@ -184,6 +197,7 @@ function postCreateInitialProfile(queryObjects){
 		docSelf.BindToDb(DefaultDb);
 		docSelf.Save();
 
+		_notificate('oc_1', manager.id, curUserID);
 		return tools.object_to_text({
 			success: true
 		}, 'json');
@@ -496,6 +510,13 @@ function _docWvars(id){
 
 
 
+function getInstruction(){
+	var instruction = _instruction();
+	return tools.object_to_text({
+		instruction: String(instruction)
+	}, 'json')
+}
+
 function getSubordinateData(queryObjects){
 	var userID = queryObjects.HasProperty('user_id') ? Trim(queryObjects.user_id) : curUserID;
 
@@ -617,6 +638,14 @@ function postFourthStep(queryObjects) {
 			docPlan.TopElem.workflow_state = 4;
 			docPlan.TopElem.is_done = true;
 			docPlan.Save();
+
+			var bossId = _assessmentBossByUser(curUserID);
+
+			if (bossId != undefined){
+				_notificate('oc_4', bossId, curUserID);
+				_notificate('oc_5', curUserID, bossId);
+			}
+
 			return tools.object_to_text({ step: 4 }, 'json');
 		} catch (e) {
 			return tools.object_to_text({ status: 'error: ' + e }, 'json');
@@ -629,8 +658,6 @@ function postThirdStep(queryObjects){
 	var paId = data.HasProperty('id') ? data.id : null;
 	var overall = data.HasProperty('overall') ? data.overall : '';
 	var _competences = data.HasProperty('competences') ? data.competences : null;
-
-	// type 2 типов user и boss ( кто сохраняет)
 
 	var curPaCard = OpenDoc(UrlFromDocID(Int(paId)));
 	for (elem in _competences) {
@@ -658,6 +685,7 @@ function postThirdStep(queryObjects){
 	docPlan.TopElem.workflow_state = 3;
 	docPlan.Save();
 
+	_notificate('oc_3', curPaCard.TopElem.person_id, curUserID);
 	return tools.object_to_text({
 		step: 3
 	}, 'json');
@@ -716,6 +744,8 @@ function postSecondStep(queryObjects){
 		curPaCard.TopElem.workflow_state = 2;
 		curPaCard.TopElem.workflow_state_name = 'Оценка руководителя';
 		curPaCard.Save();
+
+		_notificate('oc_2', docPlan.TopElem.boss_id, curUserID);
 	} catch(e){alert(e);}
 
 	return tools.object_to_text({

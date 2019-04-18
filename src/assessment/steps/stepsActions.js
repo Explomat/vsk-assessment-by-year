@@ -6,13 +6,13 @@ import { searchManagersMock, saveAssessmentMock } from '../mock';
 export const constants = {
 	...createRemoteActions([
 		'STEPS_GET_COLLABORATORS',
-		'STEPS_SAVE'
+		'STEPS_SAVE',
+		'STEPS_GET_INSTRUCTION'
 	]),
 	'STEPS_SET_STEP': 'STEPS_SET_STEP',
 	'STEPS_SET_LOADING': 'STEPS_SET_LOADING',
 	'STEPS_SET_MANAGER': 'STEPS_SET_MANAGER',
-	'STEPS_SET_STATUS': 'STEPS_SET_STATUS',
-	'STEPS_SET_REDIRECT': 'STEPS_SET_REDIRECT'
+	'STEPS_SET_STATUS': 'STEPS_SET_STATUS'
 };
 
 export function setStep(step){
@@ -76,6 +76,7 @@ export function searchManagers(value){
 
 		request('Collaborators')
 			.get({ search: value })
+			.then(r => r.json())
 			.then(d => {
 				dispatch({
 					type: constants.STEPS_GET_COLLABORATORS_SUCCESS,
@@ -92,3 +93,30 @@ export function searchManagers(value){
 		}, 300);*/
 	}
 };
+
+
+export function loadInstruction(){
+	return dispatch => {
+		dispatch(setLoading(true));
+
+		request('Instruction')
+			.get()
+			.then(r => r.json())
+			.then(d => {
+				dispatch({
+					type: constants.STEPS_GET_INSTRUCTION_SUCCESS,
+					payload: d.instruction
+				});
+				dispatch(setLoading(false));
+			})
+			.catch(e => console.log(e));
+
+		/*setTimeout(() => {
+			dispatch({
+					type: constants.STEPS_GET_INSTRUCTION_SUCCESS,
+					payload: "<div>test test test test test test test test</div>"
+			});
+			dispatch(setLoading(false));
+		}, 300);*/
+	}
+}

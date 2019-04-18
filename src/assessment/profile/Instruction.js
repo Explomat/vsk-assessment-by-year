@@ -1,13 +1,13 @@
 import React from 'react';
-import { Modal } from 'semantic-ui-react';
+import { Modal, Segment } from 'semantic-ui-react';
 
 const Instruction = ({ instruction, onClose }) => {
 	return (
 		<Modal size='large' open closeIcon onClose={onClose}>
-			<Modal.Header>Инструкция</Modal.Header>
+			<Modal.Header>Ознакомьтесь с этапами прохождения оценки</Modal.Header>
 			<Modal.Content  scrolling>
 				<Modal.Description>
-					<div dangerouslySetInnerHTML={{ __html: instruction }} />
+					<Segment basic dangerouslySetInnerHTML={{ __html: instruction }} />
 				</Modal.Description>
 			</Modal.Content>
 		</Modal>

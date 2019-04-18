@@ -107,9 +107,16 @@ class Profile extends Component {
 								</Dropdown.Menu>
 							</Dropdown>
 						</Card.Description>
-						<Card.Description>
-							<a onClick={this.handleToggleInstruction}>Прочитать инструкцию</a>
-						</Card.Description>
+					</Card.Content>
+					<Card.Content className='assessment-profile__card-actions' extra>
+						<a className='assessment-profile__card-actions_action-a' onClick={this.handleToggleInstruction}>
+							<Icon name='file alternate outline' />
+							Инструкция
+						</a>
+						<a className='assessment-profile__card-actions_action-a'>
+							<Icon name='list alternate outline' />
+							Отчет
+						</a>
 					</Card.Content>
 				</Card>
 				{isShowInstruction && <Instruction instruction={instruction} onClose={this.handleToggleInstruction} />}
@@ -163,30 +170,6 @@ class Profile extends Component {
 							//const resultMark = computeResultMark(p, this.props);
 							const isOpened = this._isAssessmentOpened(p, index);
 							return <PaContainer key={p} id={p} isHeaderOpened={pasLen > 1} isOpened={isOpened} />
-								{/*<Segment clearing key={pa.id} className='assessment-profile__pa'>
-									{pasLen > 1 && <div className='assessment-profile__pa_header' onClick={() => onTogglePa(pa.id)}>
-										<Header as='h3'>
-											{isOpened ? <Icon name='angle down' /> : <Icon name='angle up' />}
-											<Header.Content style={{ width: '100%' }}>{pa.statusName} {this.renderResultMark(resultMark)}</Header.Content>
-										</Header>
-									</div>}
-									<div className={cs({
-										'assessment-profile__pa-content':  true,
-										'assessment-profile__pa-content--visible': isOpened
-									})}>
-										<div className='assessment-profile__competences'>
-											{pa.competences.map(c => <CompetenceComponent
-													key={c}
-													id={c}
-												/>
-											)}
-										</div>
-										<Header floated='right' as='h3'>Итоговый результат 
-											{this.renderResultMark(resultMark)}
-										</Header>
-									</div>
-								</Segment>
-							)*/}
 						})
 					}
 				</div>

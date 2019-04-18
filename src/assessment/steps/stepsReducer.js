@@ -1,6 +1,15 @@
 import { constants } from './stepsActions';
 import { combineReducers } from 'redux';
 
+function instruction(state = '', action) {
+	switch(action.type){
+		case constants.STEPS_GET_INSTRUCTION_SUCCESS: {
+			return action.payload;
+		}
+		default: return state;
+	}
+}
+
 function ui(state = {
 	isLoading: false
 }, action) {
@@ -9,13 +18,6 @@ function ui(state = {
 			return {
 				...state,
 				isLoading: action.payload
-			}
-		}
-
-		case constants.STEPS_SET_REDIRECT: {
-			return {
-				...state,
-				isFireRedirect: true
 			}
 		}
 
@@ -61,6 +63,7 @@ function manager(state = {
 }
 
 export default combineReducers({
+	instruction,
 	ui,
 	step,
 	status,

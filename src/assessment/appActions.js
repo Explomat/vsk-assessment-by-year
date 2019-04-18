@@ -18,6 +18,7 @@ export function getStep(){
 	return dispatch => {
 		request('UiStep')
 			.get()
+			.then(r => r.json())
 			.then(d => {
 				dispatch({
 					type: constants.GET_STEP_SUCCESS,

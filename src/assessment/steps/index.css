@@ -31,6 +31,7 @@
 .assessment-steps__step{
 	position: relative;
 	height: 450px;
+	overflow: auto;
 }
 
 .assessment-steps-confirm{

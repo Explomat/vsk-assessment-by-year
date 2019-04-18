@@ -114,6 +114,7 @@ export function getInitialData(){
 	return dispatch => {
 		request('ProfileData')
 			.get()
+			.then(r => r.json())
 			.then(d => {
 				const ndata = normalize(d, app);
 				dispatch({

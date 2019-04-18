@@ -2,22 +2,27 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { Icon, Step, Segment, Button, Dimmer, Loader } from 'semantic-ui-react';
+import Instruction from './Instruction';
 import Status from './Status';
 import SelectManager from './SelectManager';
 import Confirm from './Confirm';
-import { setStep, saveAssessment } from './stepsActions';
+import { setStep, saveAssessment, loadInstruction } from './stepsActions';
 
 import './index.css'
 
 class Steps extends Component {
 
 	_componentByStep(step){
+		const { instruction } = this.props;
+
 		switch (step) {
-			case 0:
+			case 0: 
+				return <Instruction text={instruction}/>
+			case 1:
 				return <Status />
-			case 1: 
-				return <SelectManager />
 			case 2: 
+				return <SelectManager />
+			case 3: 
 				return <Confirm />
 			default: return null;
 		}
@@ -38,6 +43,10 @@ class Steps extends Component {
 		return step < _step;
 	}
 
+	componentDidMount(){
+		this.props.onLoad();
+	}
+
 	render() {
 		const { ui, step, manager, status, nextStep, prevStep, save } = this.props;
 
@@ -49,6 +58,17 @@ class Steps extends Component {
 						active={this._isStepActive(0)}
 						disabled={this._isStepDisabled(0)}
 					>
+						<Icon name='file alternate outline' />
+						<Step.Content>
+							<Step.Title>Инструкция</Step.Title>
+							<Step.Description>Ознакомьтесь с этапами прохождения оценки</Step.Description>
+						</Step.Content>
+					</Step>
+					<Step
+						completed={this._isStepCompleted(1)}
+						active={this._isStepActive(1)}
+						disabled={this._isStepDisabled(1)}
+					>
 						<Icon name='user' />
 						<Step.Content>
 							<Step.Title>Статус</Step.Title>
@@ -57,9 +77,9 @@ class Steps extends Component {
 					</Step>
 
 					<Step
-						completed={this._isStepCompleted(1)}
-						active={this._isStepActive(1)}
-						disabled={this._isStepDisabled(1)}
+						completed={this._isStepCompleted(2)}
+						active={this._isStepActive(2)}
+						disabled={this._isStepDisabled(2)}
 					>
 						<Icon name='users' />
 						<Step.Content>
@@ -69,9 +89,9 @@ class Steps extends Component {
 					</Step>
 
 					<Step
-						completed={this._isStepCompleted(2)}
-						active={this._isStepActive(2)}
-						disabled={this._isStepDisabled(2)}
+						completed={this._isStepCompleted(3)}
+						active={this._isStepActive(3)}
+						disabled={this._isStepDisabled(3)}
 					>
 						<Icon name='info' />
 						<Step.Content>
@@ -81,7 +101,6 @@ class Steps extends Component {
 				</Step.Group>
 				<Segment attached className='assessment-steps__step'>
 					{ui.isLoading && 
-						/*<Loader text='Сохранение данных' />*/
 						<Dimmer active inverted>
 				<Loader inverted>Loading</Loader>
 			</Dimmer>
@@ -97,14 +116,14 @@ class Steps extends Component {
 						onClick={prevStep}
 					/>
 					<Button
-						disabled={(step === 1 && manager.value === null) || (step === 0 && status === '')}
+						disabled={(step === 2 && manager.value === null) || (step === 1 && status === '')}
 						color='green'
 						floated='right'
-						content={step === 2 ? 'Сохранить' : 'Вперед'}
+						content={step === 3 ? 'Сохранить' : 'Вперед'}
 						icon='right arrow'
 						labelPosition='right'
 						onClick={() => {
-							step === 2 ? save() : nextStep()
+							step === 3 ? save() : nextStep()
 						}}
 					/>
 				</Segment>
@@ -132,7 +151,8 @@ const mergeProps = (stateProps, dispatchProps) => {
 		...stateProps,
 		nextStep: () => dispatch(setStep(step + 1)),
 		prevStep: () => dispatch(setStep(step - 1)),
-		save: () => dispatch(saveAssessment(dispatchProps))
+		save: () => dispatch(saveAssessment(dispatchProps)),
+		onLoad: () => dispatch(loadInstruction())
 	}
 };
 

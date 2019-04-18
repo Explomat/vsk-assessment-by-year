@@ -16,7 +16,7 @@ const users = times(50, () => {
 	}
 });
 
-let step = 'second';
+let step = 'first';
 
 export function getStepMock(){
 	return step;
