@@ -16,7 +16,7 @@ function loading(state){
 
 export function getStep(){
 	return dispatch => {
-		request('UiStep')
+		/*request('UiStep')
 			.get()
 			.then(r => r.json())
 			.then(d => {
@@ -26,15 +26,15 @@ export function getStep(){
 				});
 				dispatch(loading(false));
 			})
-			.catch(e => console.log(e));
+			.catch(e => console.log(e));*/
 
-		/*setTimeout(() => {
+		setTimeout(() => {
 			dispatch({
 				type: constants.GET_STEP_SUCCESS,
 				step: getStepMock()
 			});
 
 			dispatch(loading(false));
-		}, 1000)*/
+		}, 1000)
 	}
 }

@@ -7,8 +7,6 @@ import { getInitialData, thirdStep } from './subordinateActions';
 import { isCompetencesCompleted } from '../calculations';
 import { omit } from 'lodash';
 
-import './subordinate.css';
-
 class Main extends Component {
 
 	componentDidMount(){

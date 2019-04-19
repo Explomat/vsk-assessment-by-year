@@ -7,8 +7,9 @@ import Status from './Status';
 import SelectManager from './SelectManager';
 import Confirm from './Confirm';
 import { setStep, saveAssessment, loadInstruction } from './stepsActions';
+import CSSModules from 'react-css-modules';
 
-import './index.css'
+import styles from './index.module.css'
 
 class Steps extends Component {
 
@@ -51,7 +52,7 @@ class Steps extends Component {
 		const { ui, step, manager, status, nextStep, prevStep, save } = this.props;
 
 		return (
-			<div className='assessment-steps'>
+			<div styleName='assessment-steps'>
 				<Step.Group size='tiny' attached='top' fluid>
 					<Step
 						completed={this._isStepCompleted(0)}
@@ -99,7 +100,7 @@ class Steps extends Component {
 						</Step.Content>
 					</Step>
 				</Step.Group>
-				<Segment attached className='assessment-steps__step'>
+				<Segment attached styleName='assessment-steps__step'>
 					{ui.isLoading && 
 						<Dimmer active inverted>
 				<Loader inverted>Loading</Loader>
@@ -156,4 +157,4 @@ const mergeProps = (stateProps, dispatchProps) => {
 	}
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps, mergeProps)(Steps));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps, mergeProps)(CSSModules(Steps, styles)));

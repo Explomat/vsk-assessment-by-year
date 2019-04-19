@@ -99,7 +99,7 @@ export function loadInstruction(){
 	return dispatch => {
 		dispatch(setLoading(true));
 
-		request('Instruction')
+		/*request('Instruction')
 			.get()
 			.then(r => r.json())
 			.then(d => {
@@ -109,14 +109,14 @@ export function loadInstruction(){
 				});
 				dispatch(setLoading(false));
 			})
-			.catch(e => console.log(e));
+			.catch(e => console.log(e));*/
 
-		/*setTimeout(() => {
+		setTimeout(() => {
 			dispatch({
 					type: constants.STEPS_GET_INSTRUCTION_SUCCESS,
 					payload: "<div>test test test test test test test test</div>"
 			});
 			dispatch(setLoading(false));
-		}, 300);*/
+		}, 300);
 	}
 }
