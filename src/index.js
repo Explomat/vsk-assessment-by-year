@@ -1,3 +1,10 @@
+import '@babel/polyfill';
+//import "core-js/features/object/assign";
+import "core-js/features/set";
+import "core-js/features/map";
+//import "core-js/features/set";
+//import "core-js/features/map";
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter as Router } from 'react-router-dom';
@@ -7,11 +14,11 @@ import App from './assessment/App';
 
 // Redux Store
 import configureStore from './store';
+
 import 'semantic-ui-css/semantic.min.css';
 import './css/global.css';
 //import './css/roboto.css';
 
-import '@babel/polyfill';
 
 const store = configureStore({
 	wt: {

@@ -1,6 +1,6 @@
 
 
-function createBaseUrl(action_name){
+export function createBaseUrl(action_name){
 	action_name = action_name || '';
 
 	const baseUrl =

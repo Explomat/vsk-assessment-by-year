@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Instruction from './Instruction';
 //import { Collapse } from 'react-collapse';
 //import { presets } from 'react-motion';
+import { createBaseUrl } from '../../utils/request';
 import { Card, Image, Icon, Message, Table, Divider, Dropdown, Button, Label, Header } from 'semantic-ui-react';
 import { assessmentSteps } from '../config/steps';  
 import { isCompetencesCompleted } from '../calculations';
@@ -113,7 +114,7 @@ class Profile extends Component {
 							<Icon name='file alternate outline' />
 							Инструкция
 						</a>
-						<a className='assessment-profile__card-actions_action-a'>
+						<a href={`${createBaseUrl('Report')}&user_id=${user.id}`} className='assessment-profile__card-actions_action-a'>
 							<Icon name='list alternate outline' />
 							Отчет
 						</a>
