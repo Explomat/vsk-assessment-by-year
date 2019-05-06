@@ -9,7 +9,7 @@ import Confirm from './Confirm';
 import { setStep, saveAssessment, loadInstruction } from './stepsActions';
 import CSSModules from 'react-css-modules';
 
-import styles from './index.module.css'
+import styles from './index.css'
 
 class Steps extends Component {
 

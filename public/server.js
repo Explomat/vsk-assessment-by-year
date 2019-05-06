@@ -936,7 +936,7 @@ function getReport(queryObjects){
 	for (i = 0; i < ArrayCount(_paSelf.competences); i = i + 1) {
 		cindex = 1;
 		cSelf = _paSelf.competences[i];
-		cManager = _paManager.competences[i];
+		cManager = _paManager != undefined ? _paManager.competences[i] : undefined;
 
 		oCell = oWorksheet.Cells.GetCell(columnNameByIndex(cindex) + rindex);
 		oCell.Value = cSelf.competence_name;
@@ -949,18 +949,21 @@ function getReport(queryObjects){
 		setMaxColWith(oCell.Value, colWidths, cindex);
 		cindex = cindex + 1;
 
-		oCell = oWorksheet.Cells.GetCell(columnNameByIndex(cindex) + rindex);
-		oCell.Value = cManager.mark_text;
-		oCell.Style.ForegroundColor = colorByMark(cManager.mark_text, _rules);
-		setMaxColWith(oCell.Value, colWidths, cindex);
+		if (cManager != undefined){
+			oCell = oWorksheet.Cells.GetCell(columnNameByIndex(cindex) + rindex);
+			oCell.Value = cManager.mark_text;
+			oCell.Style.ForegroundColor = colorByMark(cManager.mark_text, _rules);
+			setMaxColWith(oCell.Value, colWidths, cindex);
+		}
 		cindex = cindex + 1;
+		
 
 		rindex = rindex + 1;
 
 		for (j = 0; j < ArrayCount(cSelf.indicators); j = j + 1) {
 			prevCindex = cindex;
 			iSelf = cSelf.indicators[j];
-			iManager = cManager.indicators[j];
+			iManager = cManager != undefined ? cManager.indicators[j] : undefined;
 
 			oCell = oWorksheet.Cells.GetCell(columnNameByIndex(cindex) + rindex);
 			oCell.Value = iSelf.indicator_name;
@@ -973,12 +976,15 @@ function getReport(queryObjects){
 			setMaxColWith(oCell.Value, colWidths, cindex);
 			cindex = cindex + 1;
 
-			oCell = oWorksheet.Cells.GetCell(columnNameByIndex(cindex) + rindex);
-			oCell.Value = iManager.mark_text;
-			oCell.Style.ForegroundColor = colorByMark(iManager.mark_text, _rules);
-			setMaxColWith(oCell.Value, colWidths, cindex);
+			if (iManager != undefined){
+				oCell = oWorksheet.Cells.GetCell(columnNameByIndex(cindex) + rindex);
+				oCell.Value = iManager.mark_text;
+				oCell.Style.ForegroundColor = colorByMark(iManager.mark_text, _rules);
+				setMaxColWith(oCell.Value, colWidths, cindex);
+				
+			}
 			cindex = cindex + 1;
-
+			
 			rindex = rindex + 1;
 			cindex = prevCindex;
 		}
@@ -1005,12 +1011,15 @@ function getReport(queryObjects){
 	oCell.Style.FontColor = "#444444";
 	oCell.Style.IsBold = true;
 
-	oCell = oWorksheet.Cells.GetCell('B' + rindex);
-	oCell.Value = markByPercent(_paManager.overall, _rules);
-	oCell.Style.ForegroundColor = colorByMark(oCell.Value, _rules);
-	oCell.Style.FontSize = 12;
-	oCell.Style.FontColor = "#444444";
-	oCell.Style.IsBold = true;
+	if (_paManager != undefined) {
+		oCell = oWorksheet.Cells.GetCell('B' + rindex);
+		oCell.Value = markByPercent(_paManager.overall, _rules);
+		oCell.Style.ForegroundColor = colorByMark(oCell.Value, _rules);
+		oCell.Style.FontSize = 12;
+		oCell.Style.FontColor = "#444444";
+		oCell.Style.IsBold = true;
+	}
+	
 
 	//alert(tools.object_to_text(colWidths, 'json'));
 

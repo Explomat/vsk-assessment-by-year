@@ -6,13 +6,21 @@ import { constants as appConstants } from './appActions';
 import { uiSteps } from './config/steps';
 
 const ui = (state = {
-	isLoading: true
+	isLoading: true,
+	error: null
 }, action) => {
 	switch(action.type) {
 		case appConstants.INITIAL_LOADING: {
 			return {
 				...state,
 				isLoading: action.payload
+			}
+		}
+
+		case appConstants.ERROR: {
+			return {
+				...state,
+				error: action.payload
 			}
 		}
 		default: return state;
