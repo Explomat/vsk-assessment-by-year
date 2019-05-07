@@ -1,4 +1,5 @@
 import createRemoteActions from '../../utils/createRemoteActions';
+import { error } from '../appActions';
 import request from '../../utils/request';
 import mock from './mockData';
 import { setStepMock } from '../mock';
@@ -86,7 +87,10 @@ export function getInitialData(subordinateId){
 				});
 				dispatch(setLoading(false));
 			})
-			.catch(e => console.log(e));
+			.catch(e => {
+				console.error(e);
+				dispatch(error(e.message));
+			});
 		/*setTimeout(() => {
 			const ndata = normalize(mock, app);
 			dispatch({
@@ -132,7 +136,10 @@ export function thirdStep(){
 					dispatch(getInitialData(user.id));
 					dispatch(setLoading(false));
 				})
-				.catch(e => console.log(e))
+				.catch(e => {
+					console.error(e);
+					dispatch(error(e.message));
+				});
 
 			/*setTimeout(()=> {
 				dispatch(setLoading(false));

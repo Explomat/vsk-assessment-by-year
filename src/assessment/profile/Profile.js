@@ -177,15 +177,24 @@ class Profile extends Component {
 				<div className='assessment-profile__result'>
 					{
 						user.assessment.step == assessmentSteps.first && 
-						meta.curUserID === user.id &&
-						isCompleted &&
-						<Button
-							inverted
-							color='blue'
-							onClick={onSecondStep}
-						>
-							Перевести на оценку руководителя
-						</Button>
+						meta.curUserID === user.id && (
+							<div>
+								<Button
+									disabled={!isCompleted}
+									color='blue'
+									onClick={onSecondStep}
+								>
+									Перевести на оценку руководителя
+								</Button>
+								{!isCompleted &&
+									<Message negative>
+										<Message.Content>
+											Анкета заполнена не полностью!
+										</Message.Content>
+									</Message>
+								}
+							</div>
+						)
 					}
 					{
 						user.assessment.step == assessmentSteps.third && 

@@ -1,4 +1,5 @@
 import createRemoteActions from '../../utils/createRemoteActions';
+import { error } from '../appActions';
 import request from '../../utils/request';
 import { getStep } from '../appActions';
 import { searchManagersMock, saveAssessmentMock } from '../mock';
@@ -43,7 +44,7 @@ function setLoading(isLoading){
 	}
 };
 
-export function saveAssessment(ownProps){
+export function saveAssessment( ownProps){
 	return (dispatch, getState) => {
 		dispatch(setLoading(true));
 
@@ -56,7 +57,12 @@ export function saveAssessment(ownProps){
 			.then(d => {
 				dispatch(getStep());
 				dispatch(setLoading(false));
+				//window.location.hash = '/profile';
 				ownProps.history.push('/profile');
+			})
+			.catch(e => {
+				console.error(e);
+				dispatch(error(e.message));
 			});
 
 		/*setTimeout(() => {
@@ -83,7 +89,10 @@ export function searchManagers(value){
 					payload: d
 				});
 			})
-			.catch(e => console.log(e));
+			.catch(e => {
+				console.error(e);
+				dispatch(error(e.message));
+			});
 
 		/*setTimeout(() => {
 			dispatch({
@@ -109,7 +118,10 @@ export function loadInstruction(){
 				});
 				dispatch(setLoading(false));
 			})
-			.catch(e => console.log(e));
+			.catch(e => {
+				console.error(e);
+				dispatch(error(e.message));
+			});
 
 		/*setTimeout(() => {
 			dispatch({

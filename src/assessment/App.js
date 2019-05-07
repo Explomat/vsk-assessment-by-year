@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Steps } from './steps';
 import Profile from './profile';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Loader, Message, Modal } from 'semantic-ui-react';
 
 import { uiSteps } from './config/steps';
 import { getStep } from './appActions';
@@ -16,8 +16,24 @@ class App extends Component {
 	}
 
 	render(){
-		const { step, isLoading } = this.props;
-		return isLoading ? (
+		const { step, ui } = this.props;
+
+		if (ui.error){
+			return (
+				<Modal size='tiny' centered={false} open>
+					<Modal.Content>
+						<Message negative>
+							<Message.Header>Произошла ошибка! Обновите страницу.</Message.Header>
+							<p>
+								{ui.error}
+							</p>
+						</Message>
+					</Modal.Content>
+				</Modal>
+			);
+		}
+
+		return ui.isLoading ? (
 			<Dimmer active inverted>
 				<Loader inverted>Loading</Loader>
 			</Dimmer>) : (
@@ -49,7 +65,7 @@ class App extends Component {
 function mapStateToProps(state){
 	return {
 		step: state.app.step,
-		isLoading: state.app.ui.isLoading
+		ui: state.app.ui
 	}
 }
 

@@ -9,7 +9,7 @@ export function createBaseUrl(action_name){
 
 	window.routerId = '6608757688272505447';
 	window.serverId = '6672233575633323919';
-	return `${baseUrl}?object_id=${window.routerId}&server_id=${window.serverId}&action_name=${action_name}`
+	return `${baseUrl}?object_id=${window.routerId}&server_id=${window.serverId}&action_name=${action_name}&r=${(new Date()).getTime()}`
 }
 
 const request = action_name => {

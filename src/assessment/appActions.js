@@ -4,6 +4,7 @@ import { getStepMock } from './mock';
 
 export const constants = {
 	'INITIAL_LOADING': 'INITIAL_LOADING',
+	'ERROR': 'ERROR',
 	...createRemoteActions('GET_STEP')
 }
 
@@ -11,6 +12,13 @@ function loading(state){
 	return {
 		type: constants.INITIAL_LOADING,
 		payload: state
+	}
+}
+
+export function error(err){
+	return {
+		type: constants.ERROR,
+		payload: err
 	}
 }
 
@@ -26,7 +34,10 @@ export function getStep(){
 				});
 				dispatch(loading(false));
 			})
-			.catch(e => console.log(e));
+			.catch(e => {
+				console.error(e);
+				dispatch(error(e.message));
+			});
 
 		/*setTimeout(() => {
 			dispatch({

@@ -1,5 +1,5 @@
 import createRemoteActions from '../../utils/createRemoteActions';
-import { constants as appConstants } from '../appActions';
+import { constants as appConstants, error } from '../appActions';
 import request from '../../utils/request';
 import mock from './mockData';
 import { setStepMock } from '../mock';
@@ -82,7 +82,11 @@ export function setNewManager(){
 					step: 'first'
 				});
 			})
-			.catch(e => console.log(e));
+			.catch(e => {
+				console.error(e);
+				dispatch(error(e.message));
+			});
+
 		/*setTimeout(() => {
 			setStepMock('first');
 			dispatch({
@@ -126,7 +130,11 @@ export function getInitialData(){
 				});
 				dispatch(setLoading(false));
 			})
-			.catch(e => console.log(e));
+			.catch(e => {
+				console.error(e);
+				dispatch(error(e.message));
+			});
+
 		/*setTimeout(() => {
 			const ndata = normalize(mock, app);
 			console.log(JSON.stringify(ndata));
@@ -219,7 +227,11 @@ export function secondStep(){
 					dispatch(getInitialData());
 					dispatch(setLoading(false));
 				})
-				.catch(e => console.log(e))
+				.catch(e => {
+					console.error(e);
+					dispatch(error(e.message));
+				});
+
 		}
 
 		/*setTimeout(()=> {
@@ -242,7 +254,10 @@ export function fourthStep(isAgree){
 				dispatch(getInitialData());
 				dispatch(setLoading(false));
 			})
-			.catch(e => console.log(e))
+			.catch(e => {
+				console.error(e);
+				dispatch(error(e.message));
+			});
 	}
 }
 
