@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Icon, Table, Label, Popup } from 'semantic-ui-react';
 import TextareaAutosize from 'react-textarea-autosize';
 import pSBC from '../../utils/pSBC';
@@ -10,7 +10,7 @@ import {
 } from '../calculations';
 
 
-class Competence extends Component {
+class Competence extends PureComponent {
 
 	constructor(props) {
 		super(props);

@@ -3,7 +3,9 @@ import { Modal, Segment } from 'semantic-ui-react';
 
 const Instruction = ({ instruction, onClose }) => {
 	return (
-		<Modal size='large' open closeIcon onClose={onClose}>
+		<Modal size='large' open closeIcon onClose={onClose} style={{
+			position: 'relative'
+		}}>
 			<Modal.Header>Ознакомьтесь с этапами прохождения оценки</Modal.Header>
 			<Modal.Content  scrolling>
 				<Modal.Description>

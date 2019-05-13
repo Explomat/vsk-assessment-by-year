@@ -122,7 +122,7 @@ class Profile extends Component {
 				</Card>
 				{isShowInstruction && <Instruction instruction={instruction} onClose={this.handleToggleInstruction} />}
 				<Message warning>
-					<Message.Header>Внимательно прочитайте перед заполнением!</Message.Header>
+					<Message.Header>Внимательно прочитайте инструкцию перед заполнением!</Message.Header>
 					<Table celled size='small'>
 						<Table.Header>
 							<Table.Row>

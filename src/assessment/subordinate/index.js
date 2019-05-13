@@ -23,7 +23,9 @@ class Main extends Component {
 			)
 		}
 		return(
-			<Modal size='large' className='assessment-subordinate' open closeIcon onClose={onClose}>
+			<Modal size='large' className='assessment-subordinate' open closeIcon onClose={onClose} style={{
+				position: 'relative'
+			}}>
 				<Modal.Header>Оценка подчиненного</Modal.Header>
 				<Modal.Content  scrolling>
 					<Modal.Description>
