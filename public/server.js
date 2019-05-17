@@ -39,8 +39,8 @@ var USER_COMPETENCE_PROFILE_ID = 6639303242852679344;
 	}
 ]*/
 
-function _notificate(templateCode, primaryId, secondaryId){
-	tools.create_notification(templateCode, primaryId, '', secondaryId);
+function _notificate(templateCode, primaryId, secondaryId, text){
+	tools.create_notification(templateCode, primaryId, text, secondaryId);
 }
 
 
@@ -642,7 +642,7 @@ function postFourthStep(queryObjects) {
 			var bossId = _assessmentBossByUser(curUserID);
 
 			if (bossId != undefined){
-				_notificate('oc_4', bossId, curUserID);
+				_notificate('oc_4', bossId, curUserID, comment);
 				_notificate('oc_5', curUserID, bossId);
 			}
 
@@ -803,6 +803,7 @@ function getReport(queryObjects){
 				person_name: String(p.person_fullname),
 				status: String(doc.TopElem.status),
 				overall: String(doc.TopElem.overall),
+				comment: String(doc.TopElem.comment),
 				competences: []
 			};
 
@@ -1019,6 +1020,13 @@ function getReport(queryObjects){
 		oCell.Style.FontColor = "#444444";
 		oCell.Style.IsBold = true;
 	}
+	rindex = rindex + 2;
+
+	oCell = oWorksheet.Cells.GetCell('A' + rindex);
+	oCell.Value = _paSelf.comment;
+	oCell.Style.FontSize = 12;
+	oCell.Style.FontColor = "#444444";
+	oCell.Style.IsBold = true;
 	
 
 	//alert(tools.object_to_text(colWidths, 'json'));
