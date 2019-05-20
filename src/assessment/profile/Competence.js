@@ -92,16 +92,18 @@ class Competence extends PureComponent {
 							const commonInd = commonIndicators[commonId(i)];
 							const isRequireComment = isCommentRequire(commonInd.scales, userInd.mark_text) && userInd.comment.trim() == '';
 							return (
-								<Table.Row key={index} disabled={isDisabled}>
+								<Table.Row key={index}>
 									<Table.Cell
 										textAlign='left'
 										width={6}
+										disabled={isDisabled}
 									>
 										{commonInd.name}
 									</Table.Cell>
 									<Table.Cell
 										textAlign='left'
 										width={3}
+										disabled={isDisabled}
 									>
 										<Label.Group>
 											{commonInd.scales.map(s => {
@@ -146,6 +148,7 @@ class Competence extends PureComponent {
 											maxRows={3}
 											placeholder='Пример'
 											value={userInd.comment}
+											disabled={isDisabled}
 											onChange={(e) => changeComment(i, e.target.value)}
 										/>
 										{isRequireComment && <Label size='tiny' className='assessment-profile__competences-container-tooltip' basic color='red' pointing='below'>
