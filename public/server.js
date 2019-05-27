@@ -914,7 +914,7 @@ function getReport(queryObjects){
 	colWidths[3] = StrCharCount(oCell.Value) * (12.0 / 9);
 
 	oCell = oWorksheet.Cells.GetCell('E' + rindex);
-	oCell.Value = 'Оценка сотрудника';
+	oCell.Value = 'Подтверждающий пример';
 	oCell.Style.FontSize = 12;
 	oCell.Style.FontColor = "#444444";
 	oCell.Style.ForegroundColor = '#CCCCCC';
@@ -923,14 +923,23 @@ function getReport(queryObjects){
 	colWidths[4] = StrCharCount(oCell.Value) * (12.0 / 9);
 
 	oCell = oWorksheet.Cells.GetCell('F' + rindex);
-	oCell.Value = 'Оценка руководителя';
+	oCell.Value = 'Оценка сотрудника';
 	oCell.Style.FontSize = 12;
 	oCell.Style.FontColor = "#444444";
 	oCell.Style.ForegroundColor = '#CCCCCC';
 	oCell.Style.IsBold = true;
 	oCell.Style.VerticalAlignment = 'Center';
 	colWidths[5] = StrCharCount(oCell.Value) * (12.0 / 9);
+
+	oCell = oWorksheet.Cells.GetCell('G' + rindex);
+	oCell.Value = 'Оценка руководителя';
+	oCell.Style.FontSize = 12;
+	oCell.Style.FontColor = "#444444";
+	oCell.Style.ForegroundColor = '#CCCCCC';
+	oCell.Style.IsBold = true;
+	oCell.Style.VerticalAlignment = 'Center';
 	colWidths[6] = StrCharCount(oCell.Value) * (12.0 / 9);
+	colWidths[7] = StrCharCount(oCell.Value) * (12.0 / 9);
 
 	rindex = rindex + 1;
 
@@ -968,6 +977,11 @@ function getReport(queryObjects){
 
 			oCell = oWorksheet.Cells.GetCell(columnNameByIndex(cindex) + rindex);
 			oCell.Value = iSelf.indicator_name;
+			setMaxColWith(oCell.Value, colWidths, cindex);
+			cindex = cindex + 1;
+
+			oCell = oWorksheet.Cells.GetCell(columnNameByIndex(cindex) + rindex);
+			oCell.Value = iSelf.comment;
 			setMaxColWith(oCell.Value, colWidths, cindex);
 			cindex = cindex + 1;
 
