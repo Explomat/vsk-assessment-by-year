@@ -1,6 +1,7 @@
 <%
 
-//var curUserID = 6668363668628000564;
+//var curUserID = 6711785032659205612; // me test
+var curUserID = 6770996101418848653; // user test
 var ASSESSMENT_APPRAISE_ID = 6639285555245559685;
 var WORK_FLOW_ID = 6639304998575803843;
 var BOSS_COMPETENCE_PROFILE_ID = 6639286275839505392;
@@ -41,43 +42,6 @@ var USER_COMPETENCE_PROFILE_ID = 6639303242852679344;
 
 function _notificate(templateCode, primaryId, secondaryId, text){
 	tools.create_notification(templateCode, primaryId, text, secondaryId);
-}
-
-
-function stringifyWT(obj) {
-	var type = DataType(obj);
-	var outStr = '';
-
-	if (obj == null || obj == undefined) {
-		return 'null';
-	}
-	if (type == 'string' || type == 'integer' || type == 'real') {
-		return '\"' + StrReplace(StrReplace(obj, '\\', '\\\\'), '\"', '\'') + '\"';
-	}
-	if (type == 'bool') {
-		return obj;
-	}
-
-	if (IsArray(obj)) {
-		var temp = '';
-		for (prop in obj) {
-			temp += stringifyWT(prop) + ',';
-		}
-		temp = temp.substr(0, temp.length - 1);
-		outStr += '[' + temp + ']';
-	} else {
-		var temp = '';
-		for (prop in obj) {
-			temp += '"' + prop + '":' + stringifyWT(obj[prop]) + ',';
-		}
-		temp = temp.substr(0, temp.length - 1);
-		outStr += '{' + temp + '}';
-	}
-	return outStr;
-}
-
-function _toJSON(obj) {
-	return UnifySpaces(HtmlToPlainText(obj));
 }
 
 function _assessmentBossByUser(userId){
@@ -126,7 +90,7 @@ function _paSelfByUser(userId){
 	return q == undefined ? q : q.id;
 }
 
-function getUiStep(){
+function get_UiStep(){
 	var pa = ArrayOptFirstElem(XQuery("sql: \n\
 		select \n\
 			count(*) c \n\
@@ -138,10 +102,10 @@ function getUiStep(){
 
 	var step = pa.c == 0 ? 'first' : 'second';
 
-	return stringifyWT({ step: step });
+	return tools.object_to_text({ step: step }, 'json');
 }
 
-function getCollaborators(queryObjects) {
+function get_Collaborators(queryObjects) {
 	var search = queryObjects.HasProperty('search') ? Trim(queryObjects.search) : '';
 
 	var colls = XQuery("sql: \n\
@@ -163,7 +127,7 @@ function getCollaborators(queryObjects) {
 	return tools.object_to_text(colls, 'json');
 }
 
-function postCreateInitialProfile(queryObjects){
+function post_CreateInitialProfile(queryObjects){
 	var data = tools.read_object(queryObjects.Body);
 	var manager = data.HasProperty('manager') ? data.manager : null;
 	var status = data.HasProperty('status') ? data.status : '';
@@ -207,9 +171,6 @@ function postCreateInitialProfile(queryObjects){
 		}, 'json');
 	}
 }
-
-
-
 
 
 function _instruction() {
@@ -506,18 +467,14 @@ function _docWvars(id){
 }
 
 
-
-
-
-
-function getInstruction(){
+function get_Instruction(){
 	var instruction = _instruction();
 	return tools.object_to_text({
 		instruction: String(instruction)
 	}, 'json')
 }
 
-function getSubordinateData(queryObjects){
+function get_SubordinateData(queryObjects){
 	var userID = queryObjects.HasProperty('user_id') ? Trim(queryObjects.user_id) : curUserID;
 
 	var userData = user(userID);
@@ -562,7 +519,7 @@ function getSubordinateData(queryObjects){
 	}, 'json');
 }
 
-function getProfileData(queryObjects){
+function get_ProfileData(queryObjects){
 
 	var userID = queryObjects.HasProperty('user_id') ? Trim(queryObjects.user_id) : curUserID;
 	var d = OpenDoc(UrlFromDocID(Int(queryObjects.DocID)));
@@ -611,9 +568,11 @@ function getProfileData(queryObjects){
 	}, 'json');
 }
 
-function postFourthStep(queryObjects) {
-	var answer = queryObjects.HasProperty('answer') ? Trim(queryObjects.answer) : '';
+function post_FourthStep(queryObjects) {
+	var data = tools.read_object(queryObjects.Body);
+	var answer = data.HasProperty('answer') ? Trim(data.answer) : '';
 	//var pa_id = queryObjects.HasProperty('pa_id') ? OptInt(queryObjects.pa_id, null) : null;
+	
 	var comment = (answer == 'false' ? 'Не согласен с результатом' : 'Согласен с результатом');
 
 	var q = ArrayOptFirstElem(XQuery("sql: \n\
@@ -653,7 +612,7 @@ function postFourthStep(queryObjects) {
 	}
 }
 
-function postThirdStep(queryObjects){
+function post_ThirdStep(queryObjects){
 	var data = tools.read_object(queryObjects.Body);
 	var paId = data.HasProperty('id') ? data.id : null;
 	var overall = data.HasProperty('overall') ? data.overall : '';
@@ -691,7 +650,7 @@ function postThirdStep(queryObjects){
 	}, 'json');
 }
 
-function postSecondStep(queryObjects){
+function post_SecondStep(queryObjects){
 	var data = tools.read_object(queryObjects.Body);
 	var paId = data.HasProperty('id') ? data.id : null;
 	var overall = data.HasProperty('overall') ? data.overall : '';
@@ -753,7 +712,7 @@ function postSecondStep(queryObjects){
 	}, 'json');
 }
 
-function postResetManager(){
+function post_ResetManager(){
 	var q = XQuery("sql: \n\
 		select p.id \n\
 		from pas p \n\
@@ -780,7 +739,7 @@ function postResetManager(){
 }
 
 
-function getReport(queryObjects){
+function get_Report(queryObjects){
 	function pasForUserReport(userId, status){
 
 		var qs = "SELECT pas.id, pas.person_fullname \n\
